@@ -3,40 +3,40 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-const CreateUserPage = () => {
+export default function CreateCoursePage() {
   const router = useRouter()
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    await fetch('/api/users', {
+    await fetch('/api/courses', {
       method: 'POST',
-      body: JSON.stringify({ name, email }),
+      body: JSON.stringify({ title, description }),
       headers: { 'Content-Type': 'application/json' },
     })
-    router.push('/users')
+    router.push('/courses')
   }
 
   return (
     <div className='space-y-6'>
-      <h1 className='text-2xl font-bold'>Create User</h1>
+      <h1 className='text-2xl font-bold'>Add Course</h1>
 
       <form onSubmit={handleSubmit} className='space-y-4 max-w-md'>
         <input
           type='text'
-          placeholder='Name'
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          placeholder='Title'
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
           className='w-full border p-2 rounded'
           required
         />
-        <input
-          type='email'
-          placeholder='Email'
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+        <textarea
+          placeholder='Description'
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
           className='w-full border p-2 rounded'
+          rows={4}
           required
         />
         <button
@@ -45,14 +45,7 @@ const CreateUserPage = () => {
         >
           Save
         </button>
-        <button
-          onClick={router.back}
-          className='bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 mx-3'
-        >
-          Back
-        </button>
       </form>
     </div>
   )
 }
-export default CreateUserPage

@@ -6,7 +6,7 @@ const Navbar = () => {
     <nav className='bg-blue-600 text-white px-6 py-4 shadow'>
       <div className='container mx-auto flex justify-between items-center'>
         <Link href='/' className='text-xl font-bold'>
-          Student System
+          Student Management System
         </Link>
         <div className='space-x-4'>
           <Link href='/users' className='hover:underline'>

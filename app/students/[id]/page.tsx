@@ -3,57 +3,66 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 
-interface User {
+interface Student {
   id: number
   name: string
   email: string
+  enrollment_date: string
 }
 
-const UserDetailPage = () => {
+export default function StudentDetailPage() {
   const { id } = useParams<{ id: string }>()
   const router = useRouter()
-  const [user, setUser] = useState<User | null>(null)
+  const [student, setStudent] = useState<Student | null>(null)
 
   useEffect(() => {
-    fetch(`/api/users/${id}`)
+    fetch(`/api/students/${id}`)
       .then((res) => res.json())
-      .then((data) => setUser(data))
+      .then((data) => setStudent(data))
   }, [id])
 
   async function handleUpdate() {
-    if (!user) return
-    await fetch(`/api/users/${id}`, {
+    if (!student) return
+    await fetch(`/api/students/${id}`, {
       method: 'PUT',
-      body: JSON.stringify(user),
+      body: JSON.stringify(student),
       headers: { 'Content-Type': 'application/json' },
     })
-    alert('User updated!')
-    router.push('/users')
+    alert('Student updated!')
+    router.push('/students')
   }
 
   async function handleDelete() {
-    if (!confirm('Are you sure you want to delete this user?')) return
-    await fetch(`/api/users/${id}`, { method: 'DELETE' })
-    router.push('/users')
+    if (!confirm('Are you sure you want to delete this student?')) return
+    await fetch(`/api/students/${id}`, { method: 'DELETE' })
+    router.push('/students')
   }
 
-  if (!user) return <p>Loading...</p>
+  if (!student) return <p>Loading...</p>
 
   return (
     <div className='space-y-6'>
-      <h1 className='text-2xl font-bold'>User Detail</h1>
+      <h1 className='text-2xl font-bold'>Student Detail</h1>
 
       <div className='space-y-4 max-w-md'>
         <input
           type='text'
-          value={user.name}
-          onChange={(e) => setUser({ ...user, name: e.target.value })}
+          value={student.name}
+          onChange={(e) => setStudent({ ...student, name: e.target.value })}
           className='w-full border p-2 rounded'
         />
         <input
           type='email'
-          value={user.email}
-          onChange={(e) => setUser({ ...user, email: e.target.value })}
+          value={student.email}
+          onChange={(e) => setStudent({ ...student, email: e.target.value })}
+          className='w-full border p-2 rounded'
+        />
+        <input
+          type='date'
+          value={student.enrollment_date}
+          onChange={(e) =>
+            setStudent({ ...student, enrollment_date: e.target.value })
+          }
           className='w-full border p-2 rounded'
         />
 
@@ -81,4 +90,3 @@ const UserDetailPage = () => {
     </div>
   )
 }
-export default UserDetailPage

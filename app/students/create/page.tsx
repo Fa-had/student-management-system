@@ -3,24 +3,25 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-const CreateUserPage = () => {
+export default function CreateStudentPage() {
   const router = useRouter()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [enrollmentDate, setEnrollmentDate] = useState('')
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    await fetch('/api/users', {
+    await fetch('/api/students', {
       method: 'POST',
-      body: JSON.stringify({ name, email }),
+      body: JSON.stringify({ name, email, enrollment_date: enrollmentDate }),
       headers: { 'Content-Type': 'application/json' },
     })
-    router.push('/users')
+    router.push('/students')
   }
 
   return (
     <div className='space-y-6'>
-      <h1 className='text-2xl font-bold'>Create User</h1>
+      <h1 className='text-2xl font-bold'>Add Student</h1>
 
       <form onSubmit={handleSubmit} className='space-y-4 max-w-md'>
         <input
@@ -36,6 +37,14 @@ const CreateUserPage = () => {
           placeholder='Email'
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          className='w-full border p-2 rounded'
+          required
+        />
+        <input
+          type='date'
+          placeholder='Enrollment Date'
+          value={enrollmentDate}
+          onChange={(e) => setEnrollmentDate(e.target.value)}
           className='w-full border p-2 rounded'
           required
         />
@@ -55,4 +64,3 @@ const CreateUserPage = () => {
     </div>
   )
 }
-export default CreateUserPage

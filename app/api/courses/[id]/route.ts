@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from 'next/server'
 import pool from '../../db'
 
@@ -7,14 +8,14 @@ export async function GET(
 ) {
   try {
     const { id } = await params
-    const [rows] = await pool.query('SELECT * FROM users WHERE id = ?', [id])
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [rows] = await pool.query(
+      'SELECT id, title, description FROM courses WHERE id = ?',
+      [id]
+    )
     if ((rows as any).length === 0) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Course not found' }, { status: 404 })
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return NextResponse.json((rows as any)[0])
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
@@ -26,14 +27,12 @@ export async function PUT(
 ) {
   try {
     const { id } = await params
-    const { name, email } = await request.json()
-    await pool.query('UPDATE users SET name = ?, email = ? WHERE id = ?', [
-      name,
-      email,
-      id,
-    ])
-    return NextResponse.json({ message: 'User updated' })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { title, description } = await request.json()
+    await pool.query(
+      'UPDATE courses SET title = ?, description = ? WHERE id = ?',
+      [title, description, id]
+    )
+    return NextResponse.json({ message: 'Course updated' })
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
@@ -45,9 +44,8 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params
-    await pool.query('DELETE FROM users WHERE id = ?', [id])
-    return NextResponse.json({ message: 'User deleted' })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await pool.query('DELETE FROM courses WHERE id = ?', [id])
+    return NextResponse.json({ message: 'Course deleted' })
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }

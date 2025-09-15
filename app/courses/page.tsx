@@ -4,51 +4,51 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
-interface User {
+interface Course {
   id: number
-  name: string
-  email: string
+  title: string
+  description: string
 }
 
-const UsersPage = () => {
-  const [users, setUsers] = useState<User[]>([])
+export default function CoursesPage() {
+  const [courses, setCourses] = useState<Course[]>([])
   const router = useRouter()
   useEffect(() => {
-    fetch('/api/users')
+    fetch('/api/courses')
       .then((res) => res.json())
-      .then((data) => setUsers(data))
+      .then((data) => setCourses(data))
   }, [])
 
   return (
     <div className='space-y-6'>
-      <h1 className='text-2xl font-bold'>Users</h1>
+      <h1 className='text-2xl font-bold'>Courses</h1>
 
       <Link
-        href='/users/create'
+        href='/courses/create'
         className='inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700'
       >
-        + Add User
+        + Add Course
       </Link>
 
-      <table className='w-full border border-gray-200'>
+      <table className='w-full border border-gray-200 mt-4'>
         <thead className='bg-gray-100'>
           <tr>
             <th className='p-2 border'>ID</th>
-            <th className='p-2 border'>Name</th>
-            <th className='p-2 border'>Email</th>
+            <th className='p-2 border'>Title</th>
+            <th className='p-2 border'>Description</th>
             <th className='p-2 border'>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {users.length > 0 ? (
-            users.map((user) => (
-              <tr key={user.id} className='text-center'>
-                <td className='p-2 border'>{user.id}</td>
-                <td className='p-2 border'>{user.name}</td>
-                <td className='p-2 border'>{user.email}</td>
+          {courses.length > 0 ? (
+            courses.map((course) => (
+              <tr key={course.id} className='text-center'>
+                <td className='p-2 border'>{course.id}</td>
+                <td className='p-2 border'>{course.title}</td>
+                <td className='p-2 border'>{course.description}</td>
                 <td className='p-2 border'>
                   <Link
-                    href={`/users/${user.id}`}
+                    href={`/courses/${course.id}`}
                     className='text-blue-600 hover:underline'
                   >
                     View / Edit
@@ -59,7 +59,7 @@ const UsersPage = () => {
           ) : (
             <tr>
               <td colSpan={4} className='p-4 text-gray-500'>
-                No users found.
+                No courses found.
               </td>
             </tr>
           )}
@@ -76,4 +76,3 @@ const UsersPage = () => {
     </div>
   )
 }
-export default UsersPage

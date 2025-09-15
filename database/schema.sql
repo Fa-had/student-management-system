@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS crud_app;
-USE crud_app;
+CREATE DATABASE IF NOT EXISTS student_management;
+USE student_management;
 
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
