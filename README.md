@@ -29,7 +29,7 @@ This project is a **full-stack CRUD application** built with **Next.js 15 (App R
 
 ---
 
-## 🗂️ Tech Stack
+## Tech Stack
 
 - **Frontend:** Next.js (App Router, Client Components)
 - **Backend:** Next.js API routes
@@ -181,10 +181,8 @@ The `database/seed.sql` file contains sample inserts for users, students, course
 
 ## Screenshots
 
-```md
 ![Dashboard](docs/dashboard.png)
 ![Users List](docs/users.png)
-```
 
 ---
 
