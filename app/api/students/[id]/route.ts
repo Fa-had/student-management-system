@@ -1,12 +1,12 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import pool from '../../db'
 
-export async function GET(
-  _request: Request,
-  { params }: { params: { id: string } }
-) {
+export const GET = (async (
+  request: NextRequest,
+  context: { params: { id: string } }
+) => {
   try {
-    const { id } = await params
+    const { id } = await context.params
     const [rows] = await pool.query(
       "SELECT id, name, email, DATE_FORMAT(enrollment_date, '%Y-%m-%d') as enrollment_date FROM students WHERE id = ?",
       [id]
@@ -21,14 +21,17 @@ export async function GET(
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
-}
+}) as unknown as (
+  req: NextRequest,
+  ctx: { params: Promise<{ id: string }> }
+) => Promise<NextResponse>
 
-export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export const PUT = (async (
+  request: NextRequest,
+  context: { params: { id: string } }
+) => {
   try {
-    const { id } = await params
+    const { id } = await context.params
     const { name, email, enrollment_date } = await request.json()
     await pool.query(
       'UPDATE students SET name = ?, email = ?, enrollment_date = ? WHERE id = ?',
@@ -39,18 +42,24 @@ export async function PUT(
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
-}
+}) as unknown as (
+  req: NextRequest,
+  ctx: { params: Promise<{ id: string }> }
+) => Promise<NextResponse>
 
-export async function DELETE(
-  _request: Request,
-  { params }: { params: { id: string } }
-) {
+export const DELETE = (async (
+  request: NextRequest,
+  context: { params: { id: string } }
+) => {
   try {
-    const { id } = await params
+    const { id } = await context.params
     await pool.query('DELETE FROM students WHERE id = ?', [id])
     return NextResponse.json({ message: 'Student deleted' })
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
-}
+}) as unknown as (
+  req: NextRequest,
+  ctx: { params: Promise<{ id: string }> }
+) => Promise<NextResponse>

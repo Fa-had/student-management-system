@@ -1,8 +1,6 @@
-// app/api/courses/route.ts
 import { NextResponse } from 'next/server'
 import pool from '../db'
 
-// GET /api/courses → fetch all courses
 export async function GET() {
   try {
     const [rows] = await pool.query(
@@ -15,7 +13,6 @@ export async function GET() {
   }
 }
 
-// POST /api/courses → create new course
 export async function POST(request: Request) {
   try {
     const { title, description } = await request.json()

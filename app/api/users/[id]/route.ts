@@ -1,10 +1,10 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import pool from '../../db'
 
-export async function GET(
-  _request: Request,
+export const GET = (async (
+  request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const { id } = await params
     const [rows] = await pool.query('SELECT * FROM users WHERE id = ?', [id])
@@ -18,12 +18,15 @@ export async function GET(
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
-}
+}) as unknown as (
+  req: NextRequest,
+  ctx: { params: Promise<{ id: string }> }
+) => Promise<NextResponse>
 
-export async function PUT(
-  request: Request,
+export const PUT = (async (
+  request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const { id } = await params
     const { name, email } = await request.json()
@@ -37,12 +40,15 @@ export async function PUT(
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
-}
+}) as unknown as (
+  req: NextRequest,
+  ctx: { params: Promise<{ id: string }> }
+) => Promise<NextResponse>
 
-export async function DELETE(
-  _request: Request,
+export const DELETE = (async (
+  request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const { id } = await params
     await pool.query('DELETE FROM users WHERE id = ?', [id])
@@ -51,4 +57,7 @@ export async function DELETE(
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
-}
+}) as unknown as (
+  req: NextRequest,
+  ctx: { params: Promise<{ id: string }> }
+) => Promise<NextResponse>

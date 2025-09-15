@@ -1,10 +1,10 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import pool from '@/app/api/db'
 
-export async function GET(
-  _request: Request,
+export const GET = (async (
+  request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const { id } = await params
     const [rows] = await pool.query(
@@ -20,4 +20,7 @@ export async function GET(
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
-}
+}) as unknown as (
+  req: NextRequest,
+  ctx: { params: Promise<{ id: string }> }
+) => Promise<NextResponse>
