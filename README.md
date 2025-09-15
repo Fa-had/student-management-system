@@ -43,8 +43,8 @@ This project is a **full-stack CRUD application** built with **Next.js 15 (App R
 ### Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
-cd YOUR_REPO
+git clone https://github.com/Fa-had/student-management-system.git
+cd student-management-system
 ```
 
 ### Install dependencies
@@ -189,4 +189,4 @@ The `database/seed.sql` file contains sample inserts for users, students, course
 ## Author
 
 - Developed by **Fahad**
-- GitHub: [https://github.com/YOUR\Fa-had](https://github.com/Fa-had)
+- GitHub: [https://github.com/Fa-had](https://github.com/Fa-had)
